@@ -1,16 +1,20 @@
-# CCSP MCP Server — Demo
+# CCSP MCP Server — Exploration
 
 An MCP (Model Context Protocol) server that exposes CCSP-like cell line screening data to Claude. Computational biologists can ask Claude natural-language questions about compound sensitivity and get plots/analysis directly.
+
+> **Note:** This repo contains only code — `sample_data/` (real or synthetic) is gitignored and never committed. Generate synthetic sample data locally with `generate_sample_data.py`, or point `CCSP_DATA_FILE`/`CCSP_DATA_DIR` at real data on your own machine.
 
 ## Quick Start
 
 ```bash
-cd ccsp-mcp-demo
+git clone https://github.com/atreyee-m-1/ccsp-mcp-exploration.git ccsp-mcp
+cd ccsp-mcp
 
 # Install dependencies
 uv sync
 
-# Generate sample data (synthetic DepMap-like data)
+# Generate sample data (synthetic DepMap-like data — sample_data/ is
+# gitignored, so this step is required after a fresh clone)
 uv run python generate_sample_data.py
 
 # Test the server starts
@@ -26,7 +30,7 @@ Add this to your Claude Code MCP config (`~/.claude/settings.json` or project `.
   "mcpServers": {
     "ccsp": {
       "command": "uv",
-      "args": ["run", "--directory", "/path/to/ccsp-mcp-demo", "python", "server.py"],
+      "args": ["run", "--directory", "/path/to/ccsp-mcp", "python", "server.py"],
       "env": {
         "CCSP_DATA_DIR": "/path/to/your/actual/data"
       }
@@ -35,7 +39,7 @@ Add this to your Claude Code MCP config (`~/.claude/settings.json` or project `.
 }
 ```
 
-> **Note:** Replace `/path/to/ccsp-mcp-demo` with the actual path, and set `CCSP_DATA_DIR` to your shared drive path containing the real CSV matrices. If omitted, it defaults to the `sample_data/` directory in this project.
+> **Note:** Replace `/path/to/ccsp-mcp` with the actual path, and set `CCSP_DATA_DIR` to your shared drive path containing the real CSV matrices. If omitted, it defaults to the `sample_data/` directory in this project — run `generate_sample_data.py` first if that directory doesn't exist yet (it's gitignored).
 
 ### Loading a single real data file (CSV/TSV)
 
@@ -46,7 +50,7 @@ For a single real-data export (e.g. a CCSP pipeline TSV) rather than the multi-f
   "mcpServers": {
     "ccsp": {
       "command": "uv",
-      "args": ["run", "--directory", "/path/to/ccsp-mcp-demo", "python", "server.py"],
+      "args": ["run", "--directory", "/path/to/ccsp-mcp", "python", "server.py"],
       "env": {
         "CCSP_DATA_FILE": "/path/to/pipeline_summary_GR_allpts.tsv"
       }
