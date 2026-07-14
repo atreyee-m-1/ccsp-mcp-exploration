@@ -1,0 +1,15 @@
+[project]
+name = "ccsp-mcp-server"
+version = "0.1.0"
+description = "MCP server for CCSP cell line screening data"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp>=1.28.1",
+    "pandas>=3.0.3",
+    "matplotlib>=3.9",
+    "httpx>=0.28.1",
+]
+
+[project.scripts]
+ccsp-mcp-server = "server:mcp.run"

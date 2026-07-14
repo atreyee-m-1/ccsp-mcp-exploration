@@ -1,0 +1,18 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# OS junk
+.DS_Store
+
+# Data — real and synthetic sample data are not pushed; regenerate synthetic
+# data locally with `uv run python generate_sample_data.py`, or set
+# CCSP_DATA_FILE / CCSP_DATA_DIR to point at real data on your own machine.
+sample_data/
