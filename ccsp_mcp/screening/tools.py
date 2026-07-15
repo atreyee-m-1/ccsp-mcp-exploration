@@ -70,6 +70,40 @@ def register(mcp) -> None:
         return "\n".join(lines)
 
     @mcp.tool()
+    def get_cell_line_info(cell_line: str) -> str:
+        """
+        Look up cancer-type/lineage metadata for a cell line (lineage, primary disease,
+        subtype, source). Use this to answer "what cancer type is cell line X" when the
+        loaded dose-response dataset itself has no lineage column.
+
+        Args:
+            cell_line: Cell line name to look up (case-insensitive, partial match)
+        """
+        meta = _data.load_cell_line_metadata()
+        if meta.empty:
+            return "No cell line metadata file is available in this environment."
+
+        mask = meta["cell_line"].str.contains(cell_line, case=False, na=False)
+        matched = meta[mask]
+
+        if matched.empty:
+            return (
+                f"No metadata found for cell line '{cell_line}'. "
+                f"Note: this metadata file only covers {len(meta)} cell lines from the "
+                "synthetic sample dataset, so it won't include every cell line present "
+                "in a real CCSP data export."
+            )
+
+        lines = [f"## Cell Line Info — matches for '{cell_line}'\n"]
+        for _, row in matched.iterrows():
+            lines.append(
+                f"- **{row['cell_line']}**: lineage={row['lineage']}, "
+                f"primary_disease={row['primary_disease']}, subtype={row['subtype']}, "
+                f"source={row['source']}"
+            )
+        return "\n".join(lines)
+
+    @mcp.tool()
     def query_data(
         compound: str | None = None,
         lineage: str | None = None,

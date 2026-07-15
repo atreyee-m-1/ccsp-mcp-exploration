@@ -78,6 +78,7 @@ third-party service, not just to Anthropic.
 | Tool | What it does |
 |------|--------------|
 | `list_available_data` | Show all compounds, lineages (if present), metrics available |
+| `get_cell_line_info` | Look up a cell line's cancer type/lineage (e.g. "what cancer type is MCF7?") from `cell_line_metadata.csv`, independent of whether the loaded dose-response data has its own lineage column |
 | `query_data` | Filter data by compound/lineage/cell_line |
 | `compare_compound_across_lineages` | "Which lineage responds best to compound X?" (requires lineage data) |
 | `compare_compounds_in_lineage` | "Which compound works best for lineage Y?" (requires lineage data) |
@@ -98,11 +99,12 @@ third-party service, not just to Anthropic.
 
 Once connected, comp bios can ask Claude things like:
 
-- "Show me a box plot of AUC for Erlotinib across all lineages"
-- "Which compound is most effective against Melanoma?"
-- "Compare Venetoclax sensitivity — is it more effective in Leukemia or Lymphoma?"
-- "Give me summary stats for all Lilly compounds (LY-*) in Breast cancer lines"
-- "Make a heatmap of median AUC for all compounds across all lineages"
+- "What cancer type is MCF7?"
+- "Show me AUC data for MCF7"
+- "Which cell lines is Erdafitinib most effective against?"
+- "What compounds have been tested on MCF7, and which works best?"
+- "Give me summary statistics for AUC on compound Erdafitinib"
+- "Generate a box plot of AUC for MCF7 across compounds"
 - "What's the mechanism of action for Erdafitinib, and what's its target?"
 
 Claude will call the appropriate tool, get the data, and generate Python plotting code (or answer directly for simple questions).
